@@ -1,0 +1,218 @@
+@font-face {
+ font-family: arcade;
+ src: url("../fonts/ARCADECLASSIC.ttf");
+}
+@font-face {
+ font-family: pixelated;
+ src: url("../fonts/pixelFJ8pt1__.ttf");
+}
+:root {
+  --deep_blue: #0C1B33;
+  --nice_blue: #036595;
+  --cute_orange: #B22C1D;
+  --sand: #FFE5B0;
+}
+html{
+  scroll-behavior: smooth;
+}
+body{
+  background-color: black;
+  background-color: #0D0212;
+  font-family: pixelated;
+  color: white;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+header{
+  display: flex;
+  height: 10vh;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  position: relative;
+  z-index: 2;
+}
+header .menu{
+  height: 100%;
+}
+header .menu ul{
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+}
+header .menu-link{
+  margin-left: 50px;
+  color: inherit;
+  text-decoration: none;
+}
+.fa-caret-down{
+  font-size: 22px;
+}
+@keyframes headerOpacity {
+  0% {
+    opacity: 0;
+  }
+  70%{
+    color: white;
+  }
+  90% {
+    color: #6EB2FF;
+    opacity: 1;
+    /* box-shadow: 0px 0px 25px 3px rgba(65,154,255,1); */
+  }
+}
+@keyframes headerLiAnimation {
+  20% {
+    box-shadow: 0px 0px 0px 0px rgba(65,154,255,1);
+  }
+  45% {
+    box-shadow: 0px 0px 25px 3px rgba(65,154,255,1);
+    background-color: rgba(65,154,255,1);
+    /* box-shadow: 0px 0px 25px 3px rgba(65,154,255,1); */
+  }
+  50%{
+    box-shadow: 0px 0px 0px 0px rgba(65,154,255,1);
+  }
+  80%{
+    box-shadow: 0px 0px 20px 2px #FDFAA2;
+    background-color: #FDFAA2;
+  }
+}
+header ul{
+  /* This section calls the slideInFromLeft animation we defined above */
+  animation: 1.5s ease-in headerOpacity;
+}
+header a{
+  position: relative;
+}
+header a::before{
+  box-shadow: 0px 0px 20px 2px #FDFAA2;
+  background-color: #FDFAA2;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -3px;
+  left: 0;
+  animation: 3s ease-in headerLiAnimation;
+  transition-duration: 0.3s;
+}
+header a:hover::before{
+  box-shadow: 0px 0px 20px 2px rgba(65,154,255,1);
+  background-color: rgba(65,154,255,1);
+}
+header{
+  display: flex;
+  align-items: center;
+  width: 95%;
+  margin: 5px auto;
+  height: 50px;
+  /* border: 1px solid red; */
+  letter-spacing: 2px;
+  font-size: 16px;
+}
+
+.logo h1{
+  display: inline;
+  font-family: arcade;
+  /* border-bottom: 16px solid white; */
+  /* border-color: linear-gradient(180deg, rgba(4,113,166,1) 0%, rgba(49,57,118,1) 100%); */
+}
+.logo-line{
+  height: 17px;
+  width: 223px;
+  margin-top: -13px;
+  margin-left: -5px;
+  background: linear-gradient(180deg, var(--nice_blue) 0%,  var(--nice_blue) 50%, var(--sand) 33%, var(--sand) 67%, var(--cute_orange) 67%);
+}
+.main{
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.game{
+  /* border: 1px solid red; */
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+}
+.score-and-info{
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.game-info{
+    display: flex;
+    flex-direction: column;
+}
+.set-difficulty{
+  margin-top: 30px;
+  height: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+button{
+  font-family: pixelated;
+  color: white;
+  background-color: black;
+  transition-duration: 1s;
+}
+button:focus{
+  outline: none;
+}
+.btn-dimmed{
+  color: #C9C9C9 !important;
+  background-color: #5A5A5A !important;
+}
+.set-difficulty button{
+  height: 30px;
+}
+.set-difficulty #normal{
+  background-color: #26C485;
+}
+.set-difficulty #hard{
+  background-color: #FF934F;
+}
+.set-difficulty #insane{
+  background-color: #FF4242;
+}
+.game-control{
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.game-control button{
+  width: 48%;
+  height: 30px;
+}
+.game-control button:active{
+  font-size: 16px;
+  transition-duration: 0.3s;
+}
+table{
+  border-collapse: collapse;
+}
+.table-main{
+  background: linear-gradient(180deg, rgba(39,36,61,1) 0%, rgba(32,32,101,1) 38%, rgba(180,255,249,1) 100%);
+}
+.table-sub{
+  background: linear-gradient(180deg, #27243d 0%, #212063 100%);
+}
+td{
+  box-sizing: border-box;
+  height: 40px;
+  width: 40px;
+  border: 1px solid white;
+  margin-left: -1px;
+  margin-bottom: -15px;
+}
+footer{
+  margin-top: 20px;
+  height: 60px;
+  background: linear-gradient(180deg, var(--nice_blue) 0%,  var(--nice_blue) 50%, var(--sand) 33%, var(--sand) 67%, var(--cute_orange) 67%);
+}
