@@ -255,11 +255,13 @@
               <button id="insane"  onclick='choose_difficulty("insane")' class="btn-difficulty">Insane</button>
             </div>
             <div class="game-control">
-              <button type="button"  onclick='game()' name="button">Start</button>
-              <button type="button" onclick='reset()' name="button">Reset</button>
+              <a href="#game">
+                <button id="button_start" type="button"  onclick='game()' name="button">Start</button>
+              </a>
+              <button id="button_reset" type="button" onclick='reset()' name="button">Reset</button>
             </div>
           </div>
-            <div class="">
+            <div class="score">
               <span>Score: </span><span id="score">0</span>
             </div>
           </div>

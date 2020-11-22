@@ -410,18 +410,6 @@ function reset(){
   }
 }
 
-function keydown_function(e){
-    keyState[e.keyCode || e.which] = true;
-    if (!lost){
-      if (e.keyCode == "27") {
-        alert('game paused')
-      }
-      else if (e.keyCode == "38") {
-        rotate()
-      }
-    }
-}
-
 async function game() {
   if (lost == false){return null}
   if (speed == 80){
@@ -445,7 +433,9 @@ async function game() {
 
 document.onkeydown = KD;
        function KD(e) {
-         event.returnValue = false;
+         if ([37, 38, 39, 40].includes(e.keyCode)){
+           event.returnValue = false;
+         }
        }
 
 initiate()

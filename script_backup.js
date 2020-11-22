@@ -445,4 +445,5 @@ document.onkeydown = KD;
        function KD(e) {
          event.returnValue = false;
        }
+    
 initiate()

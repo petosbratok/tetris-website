@@ -159,6 +159,7 @@ button{
   color: white;
   background-color: black;
   transition-duration: 1s;
+  height: 30px;
 }
 button:focus{
   outline: none;
@@ -166,9 +167,6 @@ button:focus{
 .btn-dimmed{
   color: #C9C9C9 !important;
   background-color: #5A5A5A !important;
-}
-.set-difficulty button{
-  height: 30px;
 }
 .set-difficulty #normal{
   background-color: #26C485;
@@ -186,10 +184,16 @@ button:focus{
   justify-content: space-between;
   align-items: center;
 }
-.game-control button{
+.game-control a{
   width: 48%;
-  height: 30px;
 }
+.game-control #button_reset{
+  width: 48%;
+}
+.game-control #button_start{
+  width: 100%;
+}
+
 .game-control button:active{
   font-size: 16px;
   transition-duration: 0.3s;
@@ -211,6 +215,11 @@ td{
   margin-left: -1px;
   margin-bottom: -15px;
 }
+
+.score span{
+  font-size: 18px;
+}
+
 footer{
   margin-top: 20px;
   height: 60px;
