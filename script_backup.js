@@ -2,7 +2,7 @@ var length = 17
 var width = 8
 var lost = true
 var speed_up = false
-var keyState = {};
+var keyState = {}
 var speed = 80
 var hardness_factor = 1
 var score_per_line = [0, 40, 100, 300, 1200]
@@ -351,12 +351,18 @@ function checkKeyMove() {
   }
 }
 
+function dimm_tables(){
+  tables = document.getElementsByTagName("table")
+  console.log(tables)
+}
+
 function game_over(){
   for (let col = 0; col < width; col++){
     id = "4_" + col
     if (document.getElementById(id).classList.contains("filled")){
       lost = true
       console.log('game is ended')
+      dimm_tables()
       return null;
     }
   }
@@ -410,18 +416,8 @@ function reset(){
   }
 }
 
-function keydown_function(e){
-    keyState[e.keyCode || e.which] = true;
-    if (!lost){
-      if (e.keyCode == "27") {
-        alert('game paused')
-      }
-      else if (e.keyCode == "38") {
-        rotate()
-      }
-    }
-}
 async function game() {
+  reset()
   if (lost == false){return null}
   if (speed == 80){
     choose_difficulty("normal")
@@ -441,9 +437,12 @@ async function game() {
   }
   window.removeEventListener("keydown", checkKeyMove, false);
 }
+
 document.onkeydown = KD;
        function KD(e) {
-         event.returnValue = false;
+         if ([37, 38, 39, 40].includes(e.keyCode)){
+           event.returnValue = false;
+         }
        }
-    
+
 initiate()

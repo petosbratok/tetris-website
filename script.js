@@ -2,6 +2,7 @@ var length = 17
 var width = 8
 var lost = true
 var speed_up = false
+var game_paused = false
 var keyState = {}
 var speed = 80
 var hardness_factor = 1
@@ -40,6 +41,7 @@ var forms = {
                  [[1, 3], [2, 3], [3, 3], [3, 4]],
                  [[2, 2], [2, 3], [2, 4], [3, 2]],]
 }
+var game_over_sign
 var current_speed
 var object_type
 var coords_variants
@@ -168,22 +170,24 @@ async function move_object() {
   items = document.getElementsByClassName("current")
   classes = Array.from(items[0].classList)
   while (can_move_y()){
-    for (let item_id = 3; item_id > -1; item_id--) {
-      item = items[item_id]
-      id = item.id
-      next_id = (parseInt(id.split('_')[0]) + 1) + '_' + id.split('_')[1]
-      var next_item = document.getElementById(next_id)
-      items[item_id].removeAttribute("class")
-      for (j = 0; j < 3; j++){
-        next_item.classList.add(classes[j])
+    if (!game_paused){
+      for (let item_id = 3; item_id > -1; item_id--) {
+        item = items[item_id]
+        id = item.id
+        next_id = (parseInt(id.split('_')[0]) + 1) + '_' + id.split('_')[1]
+        var next_item = document.getElementById(next_id)
+        items[item_id].removeAttribute("class")
+        for (j = 0; j < 3; j++){
+          next_item.classList.add(classes[j])
+        }
       }
-    }
-    var t0 = performance.now()
-    for (i = 1; i < 11; i++){
-      if (keyState[40]){ await sleep(5) }
-      else { await sleep(current_speed) }
-    }
-    speed_up = false
+      var t0 = performance.now()
+      for (i = 1; i < 11; i++){
+        if (keyState[40]){ await sleep(5) }
+        else { await sleep(current_speed) }
+      }
+      speed_up = false
+    } else {dimm_tables(); await sleep(100); undimm_tables()}
   }
   rows_deleted = 0
   await check_rows(length)
@@ -351,12 +355,31 @@ function checkKeyMove() {
   }
 }
 
-function game_over(){
+function dimm_tables(){
+  tables = document.getElementsByTagName("table")
+  console.log(tables)
+  for (let i = 0; i < 2; i++){
+    tables[i].classList.add("table-dimmed")
+  }
+}
+
+function undimm_tables(){
+  tables = document.getElementsByTagName("table")
+  console.log(tables)
+  for (let i = 0; i < 2; i++){
+    tables[i].classList.remove("table-dimmed")
+  }
+}
+
+async function game_over(){
   for (let col = 0; col < width; col++){
     id = "4_" + col
     if (document.getElementById(id).classList.contains("filled")){
       lost = true
       console.log('game is ended')
+      dimm_tables()
+      game_over_sign = document.getElementsByClassName("game-over")[0]
+      game_over_sign.style.opacity = 1;
       return null;
     }
   }
@@ -369,7 +392,9 @@ function initiate(){
       keyState[e.keyCode || e.which] = true;
       if (!lost){
         if (e.keyCode == "27") {
-          alert('game paused')
+          // alert('game paused')
+          game_paused = game_paused ? false : true
+          console.log(game_paused)
         }
         else if (e.keyCode == "38") {
           rotate()
@@ -392,6 +417,10 @@ function hide_upper_rows(){
 }
 
 function reset(){
+  try{
+    game_over_sign.style.opacity = 0
+    undimm_tables()
+  } catch {}
   score = 0
   score_element.innerHTML = 0
   lost = true
@@ -412,6 +441,7 @@ function reset(){
 
 async function game() {
   if (lost == false){return null}
+  reset()
   if (speed == 80){
     choose_difficulty("normal")
   }

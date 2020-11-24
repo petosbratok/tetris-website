@@ -14,8 +14,13 @@
 }
 html{
   scroll-behavior: smooth;
+  height: 100%:
 }
 body{
+  min-width: 1024px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: black;
   background-color: #0D0212;
   font-family: pixelated;
@@ -37,10 +42,68 @@ header .menu{
   height: 100%;
 }
 header .menu ul{
+  padding-left: 0px;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   list-style: none;
 }
+
+.dropdown {
+    display: inline-block;
+}
+.dropdown img{
+  height: 16px;
+  width: 16px;
+}
+.arrow-down{
+  transform: rotate(90deg);
+}
+.arrow-up{
+  transform: rotate(-90deg);
+}
+.arrow-left{
+  transform: rotate(180deg);
+}
+.dropdown-content {
+    margin-left: 50px;
+    margin-top: 3px;
+    -webkit-transform: scaleY(0);
+    -ms-transform: scaleY(0);
+    transform: scaleY(0);
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    position: absolute;
+    background-color: #e1e1e1;
+    width: 166px;
+    z-index: 1;
+    transition-duration: 0.3s;
+}
+.dropdown-line{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-content i{
+  margin-right: 10px;
+}
+.dropdown-content span {
+    color: black;
+    padding: 4px 8px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.dropdown-content span:hover {background-color: #ccc}
+
+.dropdown:hover .dropdown-content {
+  -webkit-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  transform: scaleY(1);
+
+}
+
 header .menu-link{
   margin-left: 50px;
   color: inherit;
@@ -83,10 +146,10 @@ header ul{
   /* This section calls the slideInFromLeft animation we defined above */
   animation: 1.5s ease-in headerOpacity;
 }
-header a{
+header .menu-link{
   position: relative;
 }
-header a::before{
+header .menu-link::before{
   box-shadow: 0px 0px 20px 2px #FDFAA2;
   background-color: #FDFAA2;
   content: "";
@@ -128,7 +191,7 @@ header{
 }
 .main{
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 .game{
   /* border: 1px solid red; */
@@ -154,6 +217,9 @@ header{
   justify-content: space-between;
   align-items: center;
 }
+.set-difficulty button{
+  width: 100%;
+}
 button{
   font-family: pixelated;
   color: white;
@@ -163,6 +229,20 @@ button{
 }
 button:focus{
   outline: none;
+}
+
+.game-over{
+  opacity: 0;
+  left: 36.5%;
+  top: 25%;
+  position: absolute;
+  background-color: black;
+  font-size: 20px;
+  z-index: 2;
+  transition-duration: 1s;
+}
+.table-dimmed{
+  opacity: 0.6;
 }
 .btn-dimmed{
   color: #C9C9C9 !important;
@@ -199,6 +279,7 @@ button:focus{
   transition-duration: 0.3s;
 }
 table{
+  transition-duration: 0.5s;
   border-collapse: collapse;
 }
 .table-main{
@@ -209,8 +290,8 @@ table{
 }
 td{
   box-sizing: border-box;
-  height: 40px;
-  width: 40px;
+  height: 5.5vh;
+  width: 5.5vh;
   border: 1px solid white;
   margin-left: -1px;
   margin-bottom: -15px;
@@ -219,8 +300,12 @@ td{
 .score span{
   font-size: 18px;
 }
-
+.all-but-footer{
+  flex-grow: 1;
+}
 footer{
+  display: block;
+  flex-grow: 0;
   margin-top: 20px;
   height: 60px;
   background: linear-gradient(180deg, var(--nice_blue) 0%,  var(--nice_blue) 50%, var(--sand) 33%, var(--sand) 67%, var(--cute_orange) 67%);
