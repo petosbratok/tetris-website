@@ -239,6 +239,7 @@ button:focus{
   position: absolute;
   background-color: black;
   font-size: 18px;
+  line-height: 29.5px;
   height: 29.5px;
   z-index: 2;
   transition-duration: 1s;
