@@ -189,6 +189,16 @@ header{
   margin-left: -5px;
   background: linear-gradient(180deg, var(--nice_blue) 0%,  var(--nice_blue) 50%, var(--sand) 33%, var(--sand) 67%, var(--cute_orange) 67%);
 }
+.made-by{
+  position: absolute;
+  top: 50px;
+  color: #DCDCDC;
+  font-size: 12px;
+}
+.made-by a{
+  text-decoration: none;
+  color: #7C7C7C;
+}
 .main{
   margin: 0 auto;
   margin-top: 30px;
