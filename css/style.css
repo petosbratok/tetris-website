@@ -206,8 +206,9 @@ header{
   justify-content: space-between;
 }
 .game-info{
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .set-difficulty{
   margin-top: 30px;
@@ -233,11 +234,12 @@ button:focus{
 
 .game-over{
   opacity: 0;
-  left: 36.5%;
-  top: 25%;
+  text-align: center;
+  width: 179.5px;
   position: absolute;
   background-color: black;
-  font-size: 20px;
+  font-size: 18px;
+  height: 29.5px;
   z-index: 2;
   transition-duration: 1s;
 }
@@ -286,12 +288,13 @@ table{
   background: linear-gradient(180deg, rgba(39,36,61,1) 0%, rgba(32,32,101,1) 38%, rgba(180,255,249,1) 100%);
 }
 .table-sub{
+  margin: 0 auto;
   background: linear-gradient(180deg, #27243d 0%, #212063 100%);
 }
 td{
   box-sizing: border-box;
-  height: 5.5vh;
-  width: 5.5vh;
+  height: 30px;
+  width: 30px;
   border: 1px solid white;
   margin-left: -1px;
   margin-bottom: -15px;

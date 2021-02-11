@@ -378,8 +378,13 @@ async function game_over(){
       lost = true
       console.log('game is ended')
       dimm_tables()
+      middle_cell = document.getElementById("8_3")
       game_over_sign = document.getElementsByClassName("game-over")[0]
+      var rect = middle_cell.getBoundingClientRect();
+      console.log(rect.top, rect.right, rect.bottom, rect.left);
       game_over_sign.style.opacity = 1;
+      game_over_sign.style.top = (rect.top + 1).toString() + "px";
+      game_over_sign.style.left = (rect.left - 59.5).toString() + "px";
       return null;
     }
   }
