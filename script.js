@@ -128,7 +128,7 @@ function can_rotate(){
   return true
 }
 
-async function rotate(){
+function rotate(){
   console.log(rotation)
   current_coords = []
   new_coords = []
@@ -181,10 +181,14 @@ async function move_object() {
           next_item.classList.add(classes[j])
         }
       }
-      var t0 = performance.now()
-      for (i = 1; i < 11; i++){
-        if (keyState[40]){ await sleep(5) }
-        else { await sleep(current_speed) }
+      for (g = 1; g < 11; g++){
+        if (keyState[40]){await sleep(5) }
+        else {
+          console.log('I am 0!')
+          console.log('i = ', g)
+          await sleep(current_speed);
+          console.log('I am 1!')
+        }
       }
       speed_up = false
     } else {dimm_tables(); await sleep(100); undimm_tables()}
@@ -427,6 +431,7 @@ function reset(){
     undimm_tables()
   } catch {}
   score = 0
+  game_paused = false
   score_element.innerHTML = 0
   lost = true
   for (let row = 0; row < length+1; row++){
