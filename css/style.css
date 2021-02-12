@@ -247,6 +247,7 @@ button:focus{
   text-align: center;
   width: 179.5px;
   position: absolute;
+  left: -299px;
   background-color: black;
   font-size: 18px;
   line-height: 29.5px;

@@ -187,7 +187,7 @@ async function move_object() {
         }
       }
       speed_up = false
-    } else {dimm_tables(); await sleep(100); undimm_tables()}
+    } else {await sleep(10);}
   }
   rows_deleted = 0
   await check_rows(length)
@@ -357,7 +357,7 @@ function checkKeyMove() {
 function dimm_tables(){
   tables = document.getElementsByTagName("table")
   for (let i = 0; i < 2; i++){
-    tables[i].classList.add("table-dimmed")
+    tables[i].classList.toggle("table-dimmed")
   }
 }
 
@@ -387,11 +387,15 @@ async function game_over(){
 
 function initiate(){
   hide_upper_rows()
-  window.addEventListener('keydown',function(e){
+  window.addEventListener('keydown', async function(e){
       keyState[e.keyCode || e.which] = true;
       if (!lost){
         if (e.keyCode == "27") {
           // alert('game paused')
+          dimm_tables();
+          if (game_paused) {
+            await sleep(current_speed * 5)
+          }
           game_paused = game_paused ? false : true
         }
         else if (e.keyCode == "38") {
@@ -440,7 +444,7 @@ function reset(){
 
 async function game() {
   if (lost == false){return null}
-  // reset()
+  reset()
   if (speed == 80){
     choose_difficulty("normal")
   }
