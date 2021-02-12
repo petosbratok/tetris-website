@@ -2,6 +2,7 @@ var length = 17
 var width = 8
 var lost = true
 var speed_up = false
+var game_paused = false
 var keyState = {}
 var speed = 80
 var hardness_factor = 1
@@ -40,6 +41,7 @@ var forms = {
                  [[1, 3], [2, 3], [3, 3], [3, 4]],
                  [[2, 2], [2, 3], [2, 4], [3, 2]],]
 }
+var game_over_sign
 var current_speed
 var object_type
 var coords_variants
@@ -126,7 +128,7 @@ function can_rotate(){
   return true
 }
 
-async function rotate(){
+function rotate(){
   console.log(rotation)
   current_coords = []
   new_coords = []
@@ -167,23 +169,26 @@ function get_element(row, col){
 async function move_object() {
   items = document.getElementsByClassName("current")
   classes = Array.from(items[0].classList)
-  while (can_move_y()){
-    for (let item_id = 3; item_id > -1; item_id--) {
-      item = items[item_id]
-      id = item.id
-      next_id = (parseInt(id.split('_')[0]) + 1) + '_' + id.split('_')[1]
-      var next_item = document.getElementById(next_id)
-      items[item_id].removeAttribute("class")
-      for (j = 0; j < 3; j++){
-        next_item.classList.add(classes[j])
+  while (await can_move_y()){
+    if (!game_paused){
+      for (let item_id = 3; item_id > -1; item_id--) {
+        item = items[item_id]
+        id = item.id
+        next_id = (parseInt(id.split('_')[0]) + 1) + '_' + id.split('_')[1]
+        var next_item = document.getElementById(next_id)
+        items[item_id].removeAttribute("class")
+        for (j = 0; j < 3; j++){
+          next_item.classList.add(classes[j])
+        }
       }
-    }
-    var t0 = performance.now()
-    for (i = 1; i < 11; i++){
-      if (keyState[40]){ await sleep(5) }
-      else { await sleep(current_speed) }
-    }
-    speed_up = false
+      for (g = 1; g < 11; g++){
+        if (keyState[40]){await sleep(5) }
+        else {
+          await sleep(current_speed);
+        }
+      }
+      speed_up = false
+    } else {dimm_tables(); await sleep(100); undimm_tables()}
   }
   rows_deleted = 0
   await check_rows(length)
@@ -201,7 +206,8 @@ function add_score(){
 }
 
 async function check_rows(start_row){
-  for (let row = start_row; row > 0; row--){
+  console.log(start_row)
+  for (let row = start_row; row > 3; row--){
     for (let col = 0; col < width; col++){
       element = get_element(row, col)
       if (!element.classList.contains("filled")) {
@@ -212,7 +218,7 @@ async function check_rows(start_row){
     rows_deleted += 1
     await delete_row(row)
     await move_down(row)
-    await check_rows(row)
+    await check_rows(start_row)
   }
 }
 
@@ -255,7 +261,7 @@ async function remove_current_class() {
   }
 }
 
-function can_move_y() {
+async function can_move_y() {
   try{
     for (let item_id = 3; item_id > -1; item_id--) {
       item = items[item_id]
@@ -265,7 +271,9 @@ function can_move_y() {
       var next_item = document.getElementById(next_id)
       try {
         if (next_item.classList.contains("filled") &&       !next_item.classList.contains("current")) {return false}
-      } catch { check_rows(length); remove_current_class();}
+      } catch {
+        // await check_rows(length);
+        console.log('movement ended'); remove_current_class();}
     }
     return true
   } catch {return false}
@@ -354,15 +362,33 @@ function checkKeyMove() {
 function dimm_tables(){
   tables = document.getElementsByTagName("table")
   console.log(tables)
+  for (let i = 0; i < 2; i++){
+    tables[i].classList.add("table-dimmed")
+  }
 }
 
-function game_over(){
+function undimm_tables(){
+  tables = document.getElementsByTagName("table")
+  console.log(tables)
+  for (let i = 0; i < 2; i++){
+    tables[i].classList.remove("table-dimmed")
+  }
+}
+
+async function game_over(){
   for (let col = 0; col < width; col++){
     id = "4_" + col
     if (document.getElementById(id).classList.contains("filled")){
       lost = true
       console.log('game is ended')
       dimm_tables()
+      middle_cell = document.getElementById("8_3")
+      game_over_sign = document.getElementsByClassName("game-over")[0]
+      var rect = middle_cell.getBoundingClientRect();
+      console.log(rect.top, rect.right, rect.bottom, rect.left);
+      game_over_sign.style.opacity = 1;
+      game_over_sign.style.top = (rect.top + 1).toString() + "px";
+      game_over_sign.style.left = (rect.left - 59.5).toString() + "px";
       return null;
     }
   }
@@ -375,7 +401,9 @@ function initiate(){
       keyState[e.keyCode || e.which] = true;
       if (!lost){
         if (e.keyCode == "27") {
-          alert('game paused')
+          // alert('game paused')
+          game_paused = game_paused ? false : true
+          console.log(game_paused)
         }
         else if (e.keyCode == "38") {
           rotate()
@@ -398,7 +426,12 @@ function hide_upper_rows(){
 }
 
 function reset(){
+  try{
+    game_over_sign.style.opacity = 0
+    undimm_tables()
+  } catch {}
   score = 0
+  game_paused = false
   score_element.innerHTML = 0
   lost = true
   for (let row = 0; row < length+1; row++){
@@ -417,8 +450,8 @@ function reset(){
 }
 
 async function game() {
-  reset()
   if (lost == false){return null}
+  // reset()
   if (speed == 80){
     choose_difficulty("normal")
   }

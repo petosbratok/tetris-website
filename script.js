@@ -129,7 +129,6 @@ function can_rotate(){
 }
 
 function rotate(){
-  console.log(rotation)
   current_coords = []
   new_coords = []
   items = document.getElementsByClassName("current")
@@ -169,7 +168,7 @@ function get_element(row, col){
 async function move_object() {
   items = document.getElementsByClassName("current")
   classes = Array.from(items[0].classList)
-  while (can_move_y()){
+  while (await can_move_y()){
     if (!game_paused){
       for (let item_id = 3; item_id > -1; item_id--) {
         item = items[item_id]
@@ -184,10 +183,7 @@ async function move_object() {
       for (g = 1; g < 11; g++){
         if (keyState[40]){await sleep(5) }
         else {
-          console.log('I am 0!')
-          console.log('i = ', g)
           await sleep(current_speed);
-          console.log('I am 1!')
         }
       }
       speed_up = false
@@ -195,21 +191,18 @@ async function move_object() {
   }
   rows_deleted = 0
   await check_rows(length)
-  console.log('rows deleted: ', rows_deleted)
   if (rows_deleted != 0){
     add_score()
   }
 }
 
 function add_score(){
-  console.log('rows deleted: ', rows_deleted)
-  console.log('hardness: ', hardness_factor)
   score += score_per_line[rows_deleted]*hardness_factor
   score_element.innerHTML = score
 }
 
 async function check_rows(start_row){
-  for (let row = start_row; row > 0; row--){
+  for (let row = start_row; row > 3; row--){
     for (let col = 0; col < width; col++){
       element = get_element(row, col)
       if (!element.classList.contains("filled")) {
@@ -220,7 +213,7 @@ async function check_rows(start_row){
     rows_deleted += 1
     await delete_row(row)
     await move_down(row)
-    await check_rows(row)
+    await check_rows(start_row)
   }
 }
 
@@ -263,7 +256,7 @@ async function remove_current_class() {
   }
 }
 
-function can_move_y() {
+async function can_move_y() {
   try{
     for (let item_id = 3; item_id > -1; item_id--) {
       item = items[item_id]
@@ -273,7 +266,9 @@ function can_move_y() {
       var next_item = document.getElementById(next_id)
       try {
         if (next_item.classList.contains("filled") &&       !next_item.classList.contains("current")) {return false}
-      } catch { check_rows(length); remove_current_class();}
+      } catch {
+        // await check_rows(length);
+        remove_current_class();}
     }
     return true
   } catch {return false}
@@ -361,7 +356,6 @@ function checkKeyMove() {
 
 function dimm_tables(){
   tables = document.getElementsByTagName("table")
-  console.log(tables)
   for (let i = 0; i < 2; i++){
     tables[i].classList.add("table-dimmed")
   }
@@ -369,7 +363,6 @@ function dimm_tables(){
 
 function undimm_tables(){
   tables = document.getElementsByTagName("table")
-  console.log(tables)
   for (let i = 0; i < 2; i++){
     tables[i].classList.remove("table-dimmed")
   }
@@ -380,19 +373,16 @@ async function game_over(){
     id = "4_" + col
     if (document.getElementById(id).classList.contains("filled")){
       lost = true
-      console.log('game is ended')
       dimm_tables()
       middle_cell = document.getElementById("8_3")
       game_over_sign = document.getElementsByClassName("game-over")[0]
       var rect = middle_cell.getBoundingClientRect();
-      console.log(rect.top, rect.right, rect.bottom, rect.left);
       game_over_sign.style.opacity = 1;
       game_over_sign.style.top = (rect.top + 1).toString() + "px";
       game_over_sign.style.left = (rect.left - 59.5).toString() + "px";
       return null;
     }
   }
-  console.log('game is not ended')
 }
 
 function initiate(){
@@ -403,7 +393,6 @@ function initiate(){
         if (e.keyCode == "27") {
           // alert('game paused')
           game_paused = game_paused ? false : true
-          console.log(game_paused)
         }
         else if (e.keyCode == "38") {
           rotate()
@@ -451,7 +440,7 @@ function reset(){
 
 async function game() {
   if (lost == false){return null}
-  reset()
+  // reset()
   if (speed == 80){
     choose_difficulty("normal")
   }
@@ -461,7 +450,6 @@ async function game() {
   score = 0
   current_speed = speed
   while (!lost){
-    console.log(keyState)
     await spawn_object()
     await sleep(500)
     await move_object()
