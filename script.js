@@ -370,7 +370,7 @@ function undimm_tables(){
 
 async function game_over(){
   for (let col = 0; col < width; col++){
-    id = "4_" + col
+    id = "3_" + col
     if (document.getElementById(id).classList.contains("filled")){
       lost = true
       dimm_tables()
